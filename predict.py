@@ -22,6 +22,10 @@ training_data["Embarked"][training_data["Embarked"] == "Q"] = 2
 training_data["Sex"][training_data["Sex"] == "female"] = 1
 training_data["Sex"][training_data["Sex"] == "male"] = 0
 
+                                                       #Parents/Children Aboard
+features_list = ["Pclass","Age","Sex","Fare", 'SibSp', 'Parch', 'Embarked']
+                                               #Siblings/Spouses Aboard
+features = training_data[features_list].values
 
 theta2 = rand_initialize_weights(NUMBER_OF_HIDDEN_UNITS, NUMBER_OF_CLASSIFIERS)
 
