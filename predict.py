@@ -27,6 +27,12 @@ features_list = ["Pclass","Age","Sex","Fare", 'SibSp', 'Parch', 'Embarked']
                                                #Siblings/Spouses Aboard
 features = training_data[features_list].values
 
+# Setup the parameters
+INPUT_LAYER_SIZE  = len(features_list)
+NUMBER_OF_HIDDEN_UNITS = 25
+NUMBER_OF_CLASSIFIERS = 2   # It's binary, either they survived or didn't
+
+theta1 = rand_initialize_weights(INPUT_LAYER_SIZE, NUMBER_OF_HIDDEN_UNITS)
 theta2 = rand_initialize_weights(NUMBER_OF_HIDDEN_UNITS, NUMBER_OF_CLASSIFIERS)
 
 compute_cost(training_data, theta1, theta2)
