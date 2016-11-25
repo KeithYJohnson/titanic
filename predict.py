@@ -12,6 +12,17 @@ training_data["Age"] = training_data["Age"].fillna(training_data["Age"].median()
 training_data["Embarked"] = training_data["Embarked"].fillna(
   training_data['Embarked'].value_counts().idxmax()
 )
+
+# Convert possible Embarked values to integers
+training_data["Embarked"][training_data["Embarked"] == "S"] = 0
+training_data["Embarked"][training_data["Embarked"] == "C"] = 1
+training_data["Embarked"][training_data["Embarked"] == "Q"] = 2
+
+# Convert genders to integers
+training_data["Sex"][training_data["Sex"] == "female"] = 1
+training_data["Sex"][training_data["Sex"] == "male"] = 0
+
+
 theta2 = rand_initialize_weights(NUMBER_OF_HIDDEN_UNITS, NUMBER_OF_CLASSIFIERS)
 
 compute_cost(training_data, theta1, theta2)
