@@ -30,3 +30,4 @@ features = training_data[features_list].values
 theta2 = rand_initialize_weights(NUMBER_OF_HIDDEN_UNITS, NUMBER_OF_CLASSIFIERS)
 
 compute_cost(training_data, theta1, theta2)
+compute_cost(features, theta1, theta2)
