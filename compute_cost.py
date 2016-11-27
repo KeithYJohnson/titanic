@@ -17,3 +17,9 @@ def compute_cost(features, theta1, theta2, actual_outcomes):
 
     second_layer_weighted_input = np.dot(first_layer_activation, theta2.transpose())
     second_layer_activation = sigmoid(second_layer_weighted_input)
+
+    y_eq_1_term = np.multiply(actual_outcomes, np.log(second_layer_activation))
+    y_eq_0_term = np.multiply((1 - actual_outcomes), np.log(1 - second_layer_activation))
+
+    num_examples = actual_outcomes.shape[0]
+    cost = (1/num_examples) * np.sum(y_eq_1_term - y_eq_0_term)
