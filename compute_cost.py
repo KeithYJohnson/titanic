@@ -21,6 +21,9 @@ def compute_cost(features, w2, w3, y):
     # Vectorized Cost
     cost = (1/num_examples) * np.sum(y_eq_1_term - y_eq_0_term)
 
+    #Accumulators used to calculate the partial derivative of J(Theta)
+    w3_partial_deriv_wrt_j = np.zeros(w3.shape)
+    w2_partial_deriv_wrt_j = np.zeros(w2.shape)
 
     #Iterative backprop, TODO vectorize
     for row_num in range(0, a1.shape[0]):
