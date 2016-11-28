@@ -22,5 +22,15 @@ def compute_cost(features, w2, w3, y):
     cost = (1/num_examples) * np.sum(y_eq_1_term - y_eq_0_term)
 
 
+    #Iterative backprop, TODO vectorize
+    for row_num in range(0, a1.shape[0]):
+        #Get row, prepend a 1 as the bias, and then reshape into 8d vector
+        a1 = np.insert(features[row_num, :], 0, 1, 0).reshape(8,1)
+        z2 = np.dot(w2, a1)
+        a2 = sigmoid(z2)
+        a2 = np.insert(a2, 0, 1, 0)
+        z3 = np.dot(w3, a2)
+        a3 = sigmoid(z3)
+        a3 = add_bias_column(a3)
 
 
