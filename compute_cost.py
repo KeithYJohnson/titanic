@@ -35,4 +35,28 @@ def compute_cost(features, w2, w3, y):
         z3 = np.dot(w3, a2)
         a3 = sigmoid(z3)
 
+        #Error of the neurons in layer 3
+        d3 = a3 - y[row_num, :] # Diff bt prediction and actual outcome for the row.
 
+        a3_deriv = sigmoid_gradient(z3)
+        # Error of neurons in layer two
+        d2 = np.multiply(
+            np.dot(w3.transpose(), d3),
+            a3_deriv
+        )
+
+        w3_partial_deriv_wrt_j =  np.add(
+            w3_partial_deriv_wrt_j,
+            np.dot(d3, a2.transpose())
+        )
+
+        w2_partial_deriv_wrt_j = np.add(
+            w2_partial_deriv_wrt_j,
+                   #Dont care about change in bias
+            np.dot(d2[1:d2.shape[0],:], a1.transpose())
+        )
+
+    w2_grad = (1/num_examples) * w2_partial_deriv_wrt_j
+    w3_grad = (1/num_examples) * w3_partial_deriv_wrt_j
+
+    return cost, w2_grad, w2_grad
