@@ -27,10 +27,10 @@ features = training_data[features_list].values
 # Setup the parameters
 INPUT_LAYER_SIZE  = len(features_list)
 NUMBER_OF_HIDDEN_UNITS = 25
-NUMBER_OF_CLASSIFIERS = 2   # It's binary, either they survived or didn't
+OUTPUT_LAYER = 1   # It's binary, either they survived or didn't
 
 theta1 = rand_initialize_weights(INPUT_LAYER_SIZE, NUMBER_OF_HIDDEN_UNITS)
-theta2 = rand_initialize_weights(NUMBER_OF_HIDDEN_UNITS, NUMBER_OF_CLASSIFIERS)
+theta2 = rand_initialize_weights(NUMBER_OF_HIDDEN_UNITS, OUTPUT_LAYER)
 
-actual_outcomes = training_data['Survived'].values
+actual_outcomes = (training_data['Survived'].values).reshape(training_data.shape[0],1)
 compute_cost(features, theta1, theta2, actual_outcomes)
