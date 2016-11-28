@@ -5,23 +5,22 @@ from sigmoid import sigmoid
 from sigmoid_gradient import sigmoid_gradient
 from add_bias_column import add_bias_column
 
-def compute_cost(features, theta1, theta2, actual_outcomes):
-    # Prepend column of ones to handle the bias
-    bias = np.ones((features.shape[0], 1))
-    features = np.concatenate((bias,features), 1)
+def compute_cost(features, w2, w3, y):
+    a1 = add_bias_column(features)
+    z2 = np.dot(a1, w2.transpose())
+    a2 = sigmoid(z2)
+    a2 = add_bias_column(a2)
+    z3 = np.dot(a2, w3.transpose())
+    a3 = sigmoid(z3)
+    z3 = np.dot(a2, w3.transpose())
+    a3 = sigmoid(z3) # Predictions
 
-    first_layer_weighted_input = np.dot(features, theta1.transpose())
-    first_layer_activation = sigmoid(first_layer_weighted_input)
-
-    #Prepend column of ones to handle the bias
-    second_layer_bias = np.ones((first_layer_activation.shape[0], 1))
-    first_layer_activation = np.concatenate((second_layer_bias, first_layer_activation), 1)
-
-    second_layer_weighted_input = np.dot(first_layer_activation, theta2.transpose())
-    second_layer_activation = sigmoid(second_layer_weighted_input)
-
-    y_eq_1_term = np.multiply(actual_outcomes, np.log(second_layer_activation))
-    y_eq_0_term = np.multiply((1 - actual_outcomes), np.log(1 - second_layer_activation))
-
-    num_examples = actual_outcomes.shape[0]
+    y_eq_1_term = np.multiply(y, np.log(a3))
+    y_eq_0_term = np.multiply((1 - y), np.log(1 - a3))
+    num_examples = y.shape[0]
+    # Vectorized Cost
     cost = (1/num_examples) * np.sum(y_eq_1_term - y_eq_0_term)
+
+
+
+
