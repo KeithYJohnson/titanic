@@ -2,6 +2,8 @@ from pdb import set_trace as st
 import math
 import numpy as np
 from sigmoid import sigmoid
+from sigmoid_gradient import sigmoid_gradient
+from add_bias_column import add_bias_column
 
 def compute_cost(features, theta1, theta2, actual_outcomes):
     # Prepend column of ones to handle the bias
