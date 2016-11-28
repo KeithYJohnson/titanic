@@ -31,6 +31,5 @@ def compute_cost(features, w2, w3, y):
         a2 = np.insert(a2, 0, 1, 0)
         z3 = np.dot(w3, a2)
         a3 = sigmoid(z3)
-        a3 = add_bias_column(a3)
 
 
