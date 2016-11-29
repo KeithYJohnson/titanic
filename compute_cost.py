@@ -60,4 +60,4 @@ def compute_cost(features, w2, w3, y):
     w2_grad = (1/num_examples) * w2_partial_deriv_wrt_j
     w3_grad = (1/num_examples) * w3_partial_deriv_wrt_j
 
-    return cost, w2_grad, w2_grad
+    return cost, w2_grad, w3_grad
