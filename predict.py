@@ -1,6 +1,7 @@
 import pandas as pd
 from compute_cost import compute_cost
 from rand_initialize_weights import rand_initialize_weights
+from check_gradient import *
 
 
 training_data = pd.DataFrame.from_csv('train.csv')
@@ -33,4 +34,6 @@ theta1 = rand_initialize_weights(INPUT_LAYER_SIZE, NUMBER_OF_HIDDEN_UNITS)
 theta2 = rand_initialize_weights(NUMBER_OF_HIDDEN_UNITS, OUTPUT_LAYER)
 
 actual_outcomes = (training_data['Survived'].values).reshape(training_data.shape[0],1)
-compute_cost(features, theta1, theta2, actual_outcomes)
+[cost, w2_grad, w3_grad] = compute_cost(features, theta1, theta2, actual_outcomes)
+
+check_gradient(compute_cost)

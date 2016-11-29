@@ -28,7 +28,8 @@ def compute_cost(features, w2, w3, y):
     #Iterative backprop, TODO vectorize
     for row_num in range(0, a1.shape[0]):
         #Get row, prepend a 1 as the bias, and then reshape into 8d vector
-        a1 = np.insert(features[row_num, :], 0, 1, 0).reshape(8,1)
+        num_rows = features.shape[1]
+        a1 = np.insert(features[row_num, :], 0, 1, 0).reshape(num_rows + 1,1)
         z2 = np.dot(w2, a1)
         a2 = sigmoid(z2)
         a2 = np.insert(a2, 0, 1, 0)
@@ -59,4 +60,4 @@ def compute_cost(features, w2, w3, y):
     w2_grad = (1/num_examples) * w2_partial_deriv_wrt_j
     w3_grad = (1/num_examples) * w3_partial_deriv_wrt_j
 
-    return cost, w2_grad, w2_grad
+    return cost, w2_grad, w3_grad
