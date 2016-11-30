@@ -48,3 +48,4 @@ print('w3_grad.shape: ', w3_grad.shape)
 
 check_gradient(compute_cost)
 # check_gradient(compute_cost)
+model = optimize.fmin_cg(compute_cost, x0=unrolled_weights, fprime=compute_gradient, args=(features, actual_outcomes), full_output=1, maxiter=500)
