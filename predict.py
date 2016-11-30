@@ -21,17 +21,10 @@ training_data["Embarked"][training_data["Embarked"] == "Q"] = 2
 # Convert genders to integers
 training_data["Sex"][training_data["Sex"] == "female"] = 1
 training_data["Sex"][training_data["Sex"] == "male"] = 0
-
-                                                       #Parents/Children Aboard
-features_list = ["Pclass","Age","Sex","Fare", 'SibSp', 'Parch', 'Embarked']
-                                               #Siblings/Spouses Aboard
-features = training_data[features_list].values
+features = training_data[FEATURES_LIST].values
 
 # Setup the parameters
 print('setting up params')
-INPUT_LAYER_SIZE  = len(features_list)
-NUMBER_OF_HIDDEN_UNITS = 25
-OUTPUT_LAYER = 1   # It's binary, either they survived or didn't
 print('INPUT_LAYER_SIZE', INPUT_LAYER_SIZE)
 print('NUMBER_OF_HIDDEN_UNITS', NUMBER_OF_HIDDEN_UNITS)
 print('OUTPUT_LAYER', OUTPUT_LAYER)
