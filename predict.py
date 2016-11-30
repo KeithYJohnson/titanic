@@ -47,3 +47,4 @@ print('w2_grad.shape: ', w2_grad.shape)
 print('w3_grad.shape: ', w3_grad.shape)
 
 check_gradient(compute_cost)
+# check_gradient(compute_cost)
