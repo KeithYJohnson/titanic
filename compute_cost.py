@@ -4,6 +4,7 @@ import numpy as np
 from sigmoid import sigmoid
 from sigmoid_gradient import sigmoid_gradient
 from add_bias_column import add_bias_column
+from params import *
 
 def compute_cost(features, w2, w3, y):
     a1 = add_bias_column(features)
