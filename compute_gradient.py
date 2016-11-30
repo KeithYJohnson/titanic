@@ -14,8 +14,6 @@ def compute_gradient(weights, features, y):
     #     OUTPUT_LAYER, NUMBER_OF_HIDDEN_UNITS + 1
     # )
 
-    print('shape c_grad weights: ', weights.shape)
-    print('c_grad weights.size: ', weights.size)
     w2 = weights[:200].reshape(25,8)
     w3 = weights[200:].reshape(1,26)
     num_examples = features.shape[0]
