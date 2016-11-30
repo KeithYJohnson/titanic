@@ -6,7 +6,7 @@ from sigmoid_gradient import sigmoid_gradient
 from add_bias_column import add_bias_column
 from params import *
 
-def compute_cost(features, w2, w3, y):
+def compute_cost(weights, features, y):
     a1 = add_bias_column(features)
     z2 = np.dot(a1, w2.transpose())
     a2 = sigmoid(z2)
