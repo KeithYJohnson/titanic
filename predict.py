@@ -3,6 +3,7 @@ from compute_cost import compute_cost
 from rand_initialize_weights import rand_initialize_weights
 from check_gradient import *
 
+from params import *
 
 training_data = pd.DataFrame.from_csv('train.csv')
 # Impute missing data
