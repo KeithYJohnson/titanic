@@ -14,8 +14,6 @@ def compute_cost(weights, features, y):
     #     OUTPUT_LAYER, NUMBER_OF_HIDDEN_UNITS + 1
     # )
 
-    print("compute_cost weights.size: ", weights.size)
-    print("compute_cost weights.shape: ", weights.shape)
     w2 = weights[:200].reshape(25,8)
     w3 = weights[200:].reshape(1,26)
 
@@ -33,5 +31,5 @@ def compute_cost(weights, features, y):
     num_examples = y.shape[0]
     # Vectorized Cost
     cost = (1/num_examples) * np.sum(y_eq_1_term - y_eq_0_term)
-    
+    print(cost)
     return cost
