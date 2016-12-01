@@ -2,7 +2,7 @@ from ipdb import set_trace as st
 from create_simple_nn_params import *
 import numpy as np
 
-def check_gradient(cost_function, epsilon = 10 ** -4):
+def check_gradient(cost_function, grad_function, epsilon = 10 ** -4, max_diff=1e-9):
     print('checking gradients')
     [features, theta1, theta2, y] = create_simple_nn_params()
     [cost, w2_grad, w3_grad] = cost_function(features, theta1, theta2, y)
