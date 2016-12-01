@@ -6,6 +6,7 @@ from scipy import optimize
 from ipdb import set_trace as st
 from params import *
 from compute_gradient import *
+from make_predictions import *
 
 training_data = pd.DataFrame.from_csv('train.csv')
 
@@ -42,3 +43,4 @@ grads = compute_gradient(unrolled_weights, features, actual_outcomes)
 
 check_gradient(compute_cost, compute_gradient)
 model = optimize.fmin_cg(compute_cost, x0=unrolled_weights, fprime=compute_gradient, args=(features, actual_outcomes), full_output=1, maxiter=500)
+predict(model[0], features, actual_outcomes)
