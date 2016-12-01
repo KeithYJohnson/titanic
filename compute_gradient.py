@@ -6,16 +6,17 @@ from sigmoid_gradient import sigmoid_gradient
 from params import *
 
 
-def compute_gradient(weights, features, y):
-    # w2 = weights[0:((INPUT_LAYER_SIZE + 1) * NUMBER_OF_HIDDEN_UNITS)].reshape(
-    #     NUMBER_OF_HIDDEN_UNITS, INPUT_LAYER_SIZE + 1
-    # )
-    # w3 = weights[0:((NUMBER_OF_HIDDEN_UNITS + 1) * OUTPUT_LAYER)].reshape(
-    #     OUTPUT_LAYER, NUMBER_OF_HIDDEN_UNITS + 1
-    # )
+def compute_gradient(weights, features, y, input_size=INPUT_LAYER_SIZE, hidden_units=NUMBER_OF_HIDDEN_UNITS, output_size=OUTPUT_LAYER):
+    # 'Re-rolling' unrolled weights
+    w2w3_idx_boundary = ((input_size + 1) * hidden_units)
+    w2 = weights[0:w2w3_idx_boundary].reshape(
+        hidden_units, input_size + 1
+    )
 
-    w2 = weights[:200].reshape(25,8)
-    w3 = weights[200:].reshape(1,26)
+    w3 = weights[w2w3_idx_boundary:].reshape(
+        output_size, hidden_units + 1
+    )
+
     num_examples = features.shape[0]
 
     #Accumulators used to calculate the partial derivative of J(Theta)
