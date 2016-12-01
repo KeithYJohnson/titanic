@@ -6,15 +6,15 @@ from sigmoid_gradient import sigmoid_gradient
 from params import *
 
 
-def compute_gradient(weights, features, y):
+def compute_gradient(weights, features, y, input_size=INPUT_LAYER_SIZE, hidden_units=NUMBER_OF_HIDDEN_UNITS, output_size=OUTPUT_LAYER):
     # 'Re-rolling' unrolled weights
-    w2w3_idx_boundary = ((INPUT_LAYER_SIZE + 1) * NUMBER_OF_HIDDEN_UNITS)
+    w2w3_idx_boundary = ((input_size + 1) * hidden_units)
     w2 = weights[0:w2w3_idx_boundary].reshape(
-        NUMBER_OF_HIDDEN_UNITS, INPUT_LAYER_SIZE + 1
+        hidden_units, input_size + 1
     )
 
     w3 = weights[w2w3_idx_boundary:].reshape(
-        OUTPUT_LAYER, NUMBER_OF_HIDDEN_UNITS + 1
+        output_size, hidden_units + 1
     )
 
     num_examples = features.shape[0]
