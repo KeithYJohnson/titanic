@@ -7,15 +7,16 @@ from params import *
 
 
 def compute_gradient(weights, features, y):
-    # w2 = weights[0:((INPUT_LAYER_SIZE + 1) * NUMBER_OF_HIDDEN_UNITS)].reshape(
-    #     NUMBER_OF_HIDDEN_UNITS, INPUT_LAYER_SIZE + 1
-    # )
-    # w3 = weights[0:((NUMBER_OF_HIDDEN_UNITS + 1) * OUTPUT_LAYER)].reshape(
-    #     OUTPUT_LAYER, NUMBER_OF_HIDDEN_UNITS + 1
-    # )
+    # 'Re-rolling' unrolled weights
+    w2w3_idx_boundary = ((INPUT_LAYER_SIZE + 1) * NUMBER_OF_HIDDEN_UNITS)
+    w2 = weights[0:w2w3_idx_boundary].reshape(
+        NUMBER_OF_HIDDEN_UNITS, INPUT_LAYER_SIZE + 1
+    )
 
-    w2 = weights[:200].reshape(25,8)
-    w3 = weights[200:].reshape(1,26)
+    w3 = weights[w2w3_idx_boundary:].reshape(
+        OUTPUT_LAYER, NUMBER_OF_HIDDEN_UNITS + 1
+    )
+
     num_examples = features.shape[0]
 
     #Accumulators used to calculate the partial derivative of J(Theta)
