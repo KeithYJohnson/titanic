@@ -6,7 +6,13 @@ from sigmoid_gradient import sigmoid_gradient
 from add_bias_column import add_bias_column
 from params import *
 
-def compute_cost(weights, features, y, input_size=INPUT_LAYER_SIZE, hidden_units=NUMBER_OF_HIDDEN_UNITS, output_size=OUTPUT_LAYER):
+def compute_cost(weights,
+                features,
+                y,
+                input_size=INPUT_LAYER_SIZE,
+                hidden_units=NUMBER_OF_HIDDEN_UNITS,
+                output_size=OUTPUT_LAYER,
+                regularization_strength=1):
     # 'Re-rolling' unrolled weights
     w2w3_idx_boundary = ((input_size + 1) * hidden_units)
     w2 = weights[0:w2w3_idx_boundary].reshape(
@@ -30,6 +36,7 @@ def compute_cost(weights, features, y, input_size=INPUT_LAYER_SIZE, hidden_units
     y_eq_0_term = np.multiply((1 - y), np.log(1 - a3))
     num_examples = y.shape[0]
     # Vectorized Cost
-    cost = (1/num_examples) * np.sum(y_eq_1_term - y_eq_0_term)
+    cost = (1/num_examples) * np.sum(y_eq_1_term - y_eq_0_term) \
+           + (regularization_strength / (2 * num_examples)) * sum(weights[1:] ** 2) #Regularization Term. 
     print(cost)
     return cost

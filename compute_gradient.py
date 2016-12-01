@@ -6,7 +6,13 @@ from sigmoid_gradient import sigmoid_gradient
 from params import *
 
 
-def compute_gradient(weights, features, y, input_size=INPUT_LAYER_SIZE, hidden_units=NUMBER_OF_HIDDEN_UNITS, output_size=OUTPUT_LAYER):
+def compute_gradient(weights,
+                    features,
+                    y,
+                    input_size=INPUT_LAYER_SIZE,
+                    hidden_units=NUMBER_OF_HIDDEN_UNITS,
+                    output_size=OUTPUT_LAYER,
+                    regularization_strength=1):
     # 'Re-rolling' unrolled weights
     w2w3_idx_boundary = ((input_size + 1) * hidden_units)
     w2 = weights[0:w2w3_idx_boundary].reshape(
@@ -55,7 +61,14 @@ def compute_gradient(weights, features, y, input_size=INPUT_LAYER_SIZE, hidden_u
             np.dot(d2[1:d2.shape[0],:], a1.transpose())
         )
 
-    w2_grad = (1/num_examples) * w2_partial_deriv_wrt_j
-    w3_grad = (1/num_examples) * w3_partial_deriv_wrt_j
+    unreg_w2_grad = (1/num_examples) * w2_partial_deriv_wrt_j
+    unreg_w3_grad = (1/num_examples) * w3_partial_deriv_wrt_j
 
-    return np.hstack([w2_grad.flatten(), w3_grad.flatten()])
+    # All the 1-indexing is to ignore the bias.
+    reg_w2_grad = unreg_w2_grad
+    reg_w2_grad[:,1:] = reg_w2_grad[:,1:] + (regularization_strength / num_examples) * w2[:, 1:]
+
+    reg_w3_grad = unreg_w3_grad
+    reg_w3_grad[:,1:] = reg_w3_grad[:,1:] + (regularization_strength / num_examples) * w3[:, 1:]
+
+    return np.hstack([reg_w2_grad.flatten(), reg_w3_grad.flatten()])
