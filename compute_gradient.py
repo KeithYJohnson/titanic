@@ -45,7 +45,6 @@ def compute_gradient(weights,
         d3 = a3 - actual_outcome # Diff bt prediction and actual outcome for the row.
 
         # Error of neurons in layer two
-
         d2 = np.multiply(
             np.dot(w3.transpose(), d3),
             sigmoid_gradient(a3)
