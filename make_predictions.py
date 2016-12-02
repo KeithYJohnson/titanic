@@ -22,4 +22,5 @@ def predict(weights, features, y, input_size=INPUT_LAYER_SIZE, hidden_units=NUMB
     did_survive = h2 > threshold
     unique, counts = np.unique(did_survive, return_counts=True)
     print('PREDICTIONS: ', dict(zip(unique, counts)))
+    print('ACCURACY: ', sum(did_survive == y) / len(y))
     return h2 > threshold
