@@ -5,6 +5,7 @@ from sigmoid import sigmoid
 from sigmoid_gradient import sigmoid_gradient
 from add_bias_column import add_bias_column
 from params import *
+from unroll_weights import *
 
 def compute_cost(weights,
                 features,
@@ -12,7 +13,8 @@ def compute_cost(weights,
                 input_size=INPUT_LAYER_SIZE,
                 hidden_units=NUMBER_OF_HIDDEN_UNITS,
                 output_size=OUTPUT_LAYER,
-                regularization_strength=1):
+                regularization_strength=1,
+                testing=False):
     # 'Re-rolling' unrolled weights
     [w2, w3] = unroll_weights(weights, input_size, hidden_units, output_size)
 
@@ -40,6 +42,7 @@ def compute_cost(weights,
     regularization     = (regularization_strength / (2 * num_examples)) * (w2_regulation_term + w3_regulation_term)
 
     cost = unregularized_cost + regularization
-
-    print(cost)
-    return cost
+    if testing:
+        return cost, a1, z2, a2, z3, a3
+    else:
+        return cost
