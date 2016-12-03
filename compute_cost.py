@@ -14,13 +14,7 @@ def compute_cost(weights,
                 output_size=OUTPUT_LAYER,
                 regularization_strength=1):
     # 'Re-rolling' unrolled weights
-    w2w3_idx_boundary = ((input_size + 1) * hidden_units)
-    w2 = weights[0:w2w3_idx_boundary].reshape(
-        hidden_units, input_size + 1
-    )
-    w3 = weights[w2w3_idx_boundary:].reshape(
-        output_size, hidden_units + 1
-    )
+    [w2, w3] = unroll_weights(weights, input_size, hidden_units, output_size)
 
     a1 = add_bias_column(features)
     z2 = np.dot(a1, w2.transpose())
