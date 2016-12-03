@@ -41,8 +41,8 @@ def compute_cost(weights,
     y_eq_0_term = np.multiply((1 - y_matrix), np.log(1 - a3))
     unregularized_cost = (1/num_examples) * np.sum(y_eq_1_term - y_eq_0_term)
 
-    w2_regulation_term = np.sum(w2[:,2:] ** 2);
-    w3_regulation_term = np.sum(w3[:,2:] ** 2);
+    w2_regulation_term = np.sum(w2[:,1:] ** 2);
+    w3_regulation_term = np.sum(w3[:,1:] ** 2);
     regularization     = (regularization_strength / (2 * num_examples)) * (w2_regulation_term + w3_regulation_term)
 
     cost = unregularized_cost + regularization
