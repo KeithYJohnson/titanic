@@ -31,8 +31,14 @@ def compute_cost(weights,
 
     num_examples = y.shape[0]
 
-    y_eq_1_term = np.multiply(-y, np.log(a3))
-    y_eq_0_term = np.multiply((1 - y), np.log(1 - a3))
+    y_matrix = np.zeros((num_examples, output_size))
+    classes = np.array(range(1, output_size + 1))
+    for i in range(num_examples):
+        outcome = y[i]
+        y_matrix[i, outcome - 1] = 1
+
+    y_eq_1_term = np.multiply(-y_matrix, np.log(a3))
+    y_eq_0_term = np.multiply((1 - y_matrix), np.log(1 - a3))
     unregularized_cost = (1/num_examples) * np.sum(y_eq_1_term - y_eq_0_term)
 
     w2_regulation_term = np.sum(w2[:,2:] ** 2);
