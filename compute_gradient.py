@@ -70,5 +70,9 @@ def compute_gradient(weights,
 
     reg_w3_grad = unreg_w3_grad
     reg_w3_grad[:,1:] = reg_w3_grad[:,1:] + (regularization_strength / num_examples) * w3[:, 1:]
+    rolled_grads = np.hstack([reg_w2_grad.flatten(), reg_w3_grad.flatten()])
 
-    return np.hstack([reg_w2_grad.flatten(), reg_w3_grad.flatten()])
+    if testing:
+        return rolled_grads, reg_w3_grad, reg_w2_grad
+    else:
+        return rolled_grads
