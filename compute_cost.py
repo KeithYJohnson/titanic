@@ -7,6 +7,7 @@ from add_bias_column import add_bias_column
 from params import *
 from unroll_weights import *
 from forward_propagate import *
+from create_y_matrix import *
 
 def compute_cost(weights,
                 features,
@@ -27,6 +28,8 @@ def compute_cost(weights,
     for i in range(num_examples):
         outcome = y[i]
         y_matrix[i, outcome - 1] = 1
+
+    y_matrix = create_y_matrix(num_examples, output_size, y)
 
     y_eq_1_term = np.multiply(-y_matrix, np.log(a3))
     y_eq_0_term = np.multiply((1 - y_matrix), np.log(1 - a3))

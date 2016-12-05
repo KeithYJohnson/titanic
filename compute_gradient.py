@@ -6,7 +6,8 @@ from sigmoid_gradient import sigmoid_gradient
 from params import *
 from unroll_weights import *
 from add_bias_column import *
-
+from forward_propagate import *
+from create_y_matrix import *
 
 def compute_gradient(weights,
                     features,
@@ -20,6 +21,7 @@ def compute_gradient(weights,
     [w2, w3] = unroll_weights(weights, input_size, hidden_units, output_size)
     [a1, z2, a2, z3, a3] = forward_propagate(weights, features, input_size, hidden_units, output_size)
 
+    num_examples = features.shape[0]
     num_features = features.shape[1]
 
     for row_num in range(0, features.shape[0]):
@@ -64,6 +66,11 @@ def compute_gradient(weights,
     reg_w3_grad = unreg_w3_grad
     reg_w3_grad[:,1:] = reg_w3_grad[:,1:] + (regularization_strength / num_examples) * w3[:, 1:]
     rolled_grads = np.hstack([reg_w2_grad.flatten(), reg_w3_grad.flatten()])
+    # Two different ways to go about d3:
+    # 1) δ**L = (a**L ⊙ σ′(z**L))
+    # 2) d3 is the difference between a3 and the y_matrix. The dimensions are the same as both, (m x r).
+    y_matrix = create_y_matrix(num_examples, output_size, y)
+    d3 = a3 - y_matrix
 
     if testing:
         return rolled_grads, reg_w3_grad, reg_w2_grad
