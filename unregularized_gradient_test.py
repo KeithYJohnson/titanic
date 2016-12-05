@@ -27,13 +27,13 @@ expected_d3 = np.matrix('\
 expected_unreg_w2_grad = np.matrix('\
    2.298415  -0.082619  -0.074786; \
    2.939691  -0.107533  -0.161585  \
-')
+') / features.shape[0] # test cases didnt scale by num_examples
 expected_unreg_w3_grad = np.matrix('\
    2.65025   1.37794   1.43501; \
    1.70629   1.03385   1.10676; \
    1.75400   0.76894   0.77931; \
    1.79442   0.93566   0.96699  \
-')
+') / features.shape[0] # test cases didnt scale by num_examples
 expected_grads = np.array([0.766138, 0.979897, -0.027540, -0.035844, -0.024929, -0.053862, 0.883417, 0.568762, 0.584668, 0.598139, 0.459314, 0.344618, 0.256313, 0.311885, 0.478337, 0.368920, 0.259771, 0.322331]).reshape(1,18)
 [actual_rolled_grads,
  actual_w3_grad,
