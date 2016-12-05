@@ -8,7 +8,9 @@ output_layer_size = 4
 weights  = np.array(list(range(1, 19))) / 10
 features = np.cos(np.matrix('1 2 ; 3 4 ; 5 6'))
 outcomes = np.matrix('4; 2; 3')
-regularization_strength = 4
+regularization_strength = 0
+
+expected_grad =np.array([0.766138,0.979897-0.027540-0.035844-0.024929-0.053862,0.883417,0.568762,0.584668,0.598139,0.459314,0.344618,0.256313,0.311885,0.478337,0.368920,0.259771,0.322331])
 
 expected_d2 = np.matrix('\
    0.79393   1.05281; \
@@ -22,22 +24,20 @@ expected_d3 = np.matrix('\
    0.923414   0.938578  -0.049102   0.960851  \
 ')
 
-expected_reg_w2_grad = np.matrix('\
+expected_unreg_w2_grad = np.matrix('\
    2.298415  -0.082619  -0.074786; \
    2.939691  -0.107533  -0.161585  \
 ')
-expected_reg_w3_grad = np.matrix('\
+expected_unreg_w3_grad = np.matrix('\
    2.65025   1.37794   1.43501; \
    1.70629   1.03385   1.10676; \
    1.75400   0.76894   0.77931; \
    1.79442   0.93566   0.96699  \
 ')
-
-expected_grads = np.array([0.76614,0.97990,0.37246,0.49749,0.64174,0.74614,0.88342,0.56876,0.58467,0.59814,1.92598,1.94462,1.98965,2.17855,2.47834,2.50225,2.52644,2.72233])
-
+expected_grads = np.array([0.766138, 0.979897, -0.027540, -0.035844, -0.024929, -0.053862, 0.883417, 0.568762, 0.584668, 0.598139, 0.459314, 0.344618, 0.256313, 0.311885, 0.478337, 0.368920, 0.259771, 0.322331]).reshape(1,18)
 [actual_rolled_grads,
- actual_reg_w3_grad,
- actual_reg_w2_grad,
+ actual_w3_grad,
+ actual_w2_grad,
  actual_unreg_w3_grad,
  actual_unreg_w2_grad,
  actual_d3,
@@ -53,4 +53,10 @@ expected_grads = np.array([0.76614,0.97990,0.37246,0.49749,0.64174,0.74614,0.883
         True
     )
 
+
+assert(np.all(abs(expected_d3 - actual_d3) <= .0001))
+assert(np.all(abs(expected_d2 - actual_d2) <= .0001))
+assert(np.all(abs(expected_unreg_w3_grad - actual_unreg_w3_grad) <= .0001))
+assert(np.all(abs(expected_unreg_w2_grad - actual_unreg_w2_grad) <= .0001))
 assert(np.all(abs(actual_rolled_grads - expected_grads) <= .0001))
+#
