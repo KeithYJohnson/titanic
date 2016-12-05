@@ -18,31 +18,9 @@ def compute_gradient(weights,
                     testing=False):
 
     [w2, w3] = unroll_weights(weights, input_size, hidden_units, output_size)
-    num_examples = features.shape[0]
+    [a1, z2, a2, z3, a3] = forward_propagate(weights, features, input_size, hidden_units, output_size)
 
-    #Accumulators used to calculate the partial derivative of J(Theta)
-    w3_partial_deriv_wrt_j = np.zeros(w3.shape)
-    w2_partial_deriv_wrt_j = np.zeros(w2.shape)
-
-    #Iterative backprop, TODO vectorize
     num_features = features.shape[1]
-
-
-    #Testing vectorized backprop here throwaway if its not in working shape
-    # a1 = add_bias_column(features)
-    # z2 = np.dot(a1, w2.transpose())
-    # a2 = sigmoid(z2)
-    # a2 = add_bias_column(a2)
-    # z3 = np.dot(a2, w3.transpose())
-    # a3 = sigmoid(z3)
-    # d3 = np.multiply(a3 - y, sigmoid_gradient(z3))
-    # d2 = np.multiply(
-    #     np.dot(w3.T, d3.T),
-    #     add_bias_column(sigmoid_gradient(z2))
-    #     # sigmoid_gradient(z2)
-    # )
-    # st()
-    # d2 = np.multily()
 
     for row_num in range(0, features.shape[0]):
         #Get row, prepend a 1 as the bias, and then reshape into 8d vector

@@ -6,6 +6,7 @@ from sigmoid_gradient import sigmoid_gradient
 from add_bias_column import add_bias_column
 from params import *
 from unroll_weights import *
+from forward_propagate import *
 
 def compute_cost(weights,
                 features,
@@ -17,13 +18,7 @@ def compute_cost(weights,
                 testing=False):
     # 'Re-rolling' unrolled weights
     [w2, w3] = unroll_weights(weights, input_size, hidden_units, output_size)
-
-    a1 = add_bias_column(features)
-    z2 = np.dot(a1, w2.transpose())
-    a2 = sigmoid(z2)
-    a2 = add_bias_column(a2)
-    z3 = np.dot(a2, w3.transpose())
-    a3 = sigmoid(z3)
+    [a1, z2, a2, z3, a3] = forward_propagate(weights, features, input_size, hidden_units, output_size)
 
     num_examples = y.shape[0]
 
