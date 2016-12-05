@@ -24,55 +24,27 @@ def compute_gradient(weights,
     num_examples = features.shape[0]
     num_features = features.shape[1]
 
-    for row_num in range(0, features.shape[0]):
-        #Get row, prepend a 1 as the bias, and then reshape into 8d vector
-        row = np.array(features[row_num, :].reshape(num_features, 1))
-        a1 = np.insert(row, 0, 1, 0)
-        z2 = np.dot(w2, a1)
-        a2 = sigmoid(z2)
-        a2 = np.insert(a2, 0, 1, 0)
-        z3 = np.dot(w3, a2)
-        a3 = sigmoid(z3)
-        #Error of the neurons in layer 3
-        actual_outcome = y[row_num]
-        classes = np.array(range(1, output_size + 1))
-        y_matrix = classes == actual_outcome;
-
-        d3 = a3 - y_matrix.T # Diff bt predictions and actual outcome for the row.
-
-        # Error of neurons in layer two
-        d2 = np.multiply(
-            np.dot(w3.T, d3),
-            np.insert(sigmoid_gradient(z2),0,1,0)
-        )
-        w3_partial_deriv_wrt_j =  np.add(
-            w3_partial_deriv_wrt_j,
-            np.dot(d3, a2.T)
-        )
-
-        w2_partial_deriv_wrt_j = np.add(
-            w2_partial_deriv_wrt_j,
-                   #Dont care about change in bias
-            np.dot(d2[1:,:], a1.transpose())
-        )
-
-    unreg_w2_grad = (1/num_examples) * w2_partial_deriv_wrt_j
-    unreg_w3_grad = (1/num_examples) * w3_partial_deriv_wrt_j
-
-    # All the 1-indexing is to ignore the bias.
-    reg_w2_grad = unreg_w2_grad
-    reg_w2_grad[:,1:] = reg_w2_grad[:,1:] + (regularization_strength / num_examples) * w2[:, 1:]
-
-    reg_w3_grad = unreg_w3_grad
-    reg_w3_grad[:,1:] = reg_w3_grad[:,1:] + (regularization_strength / num_examples) * w3[:, 1:]
-    rolled_grads = np.hstack([reg_w2_grad.flatten(), reg_w3_grad.flatten()])
-    # Two different ways to go about d3:
-    # 1) δ**L = (a**L ⊙ σ′(z**L))
-    # 2) d3 is the difference between a3 and the y_matrix. The dimensions are the same as both, (m x r).
     y_matrix = create_y_matrix(num_examples, output_size, y)
     d3 = a3 - y_matrix
 
+    # δ**l=((w**l+1).T * δ**l+1)⊙ σ′(z**l),
+    d2 = np.multiply(
+        np.dot(d3, w3[:,1:]),
+        sigmoid_gradient(z2)
+    )
+
+    unreg_w2_grad = (1/num_examples) * np.dot(d2.T, a1)
+    unreg_w3_grad = (1/num_examples) * np.dot(d3.T, a2)
+
+    w2[:,0] = 0
+    w3[:,0] = 0
+    w2_penalty = w2 * (regularization_strength / num_examples)
+    w3_penalty = w3 * (regularization_strength / num_examples)
+    reg_w2_grad = unreg_w2_grad + w2_penalty
+    reg_w3_grad = unreg_w3_grad + w3_penalty
+    rolled_grads = np.hstack([reg_w2_grad.T.flatten(), reg_w3_grad.T.flatten()])
+
     if testing:
-        return rolled_grads, reg_w3_grad, reg_w2_grad
+        return rolled_grads, reg_w3_grad, reg_w2_grad, unreg_w3_grad, unreg_w2_grad, d3, d2
     else:
         return rolled_grads
