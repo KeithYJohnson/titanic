@@ -23,11 +23,6 @@ def compute_cost(weights,
 
     num_examples = y.shape[0]
 
-    y_matrix = np.zeros((num_examples, output_size))
-    classes = np.array(range(1, output_size + 1))
-    for i in range(num_examples):
-        outcome = y[i]
-        y_matrix[i, outcome - 1] = 1
 
     y_matrix = create_y_matrix(num_examples, output_size, y)
 
