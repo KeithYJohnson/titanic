@@ -45,4 +45,4 @@ print('grad_check_diff: ', grad_check_diff)
 check_gradient(compute_cost, compute_gradient)
 
 model = optimize.fmin_bfgs(compute_cost, x0=unrolled_weights, fprime=compute_gradient, args=(features, actual_outcomes), full_output=1, maxiter=5000)
-predict(model[0], features, actual_outcomes)
+predict(model[0], features, y=actual_outcomes)
