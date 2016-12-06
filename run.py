@@ -1,4 +1,5 @@
 import pandas as pd
+import time
 from compute_cost import compute_cost
 from rand_initialize_weights import rand_initialize_weights
 from check_gradient import *
@@ -40,9 +41,32 @@ actual_outcomes = (training_data['Survived'].values).reshape(training_data.shape
 
 cost = compute_cost(unrolled_weights, features, actual_outcomes)
 grads = compute_gradient(unrolled_weights, features, actual_outcomes)
-grad_check_diff = optimize.check_grad(compute_cost, compute_gradient, unrolled_weights, features, actual_outcomes, epsilon = 10 ** -4)
-print('grad_check_diff: ', grad_check_diff)
-check_gradient(compute_cost, compute_gradient)
+# grad_check_diff = optimize.check_grad(compute_cost, compute_gradient, unrolled_weights, features, actual_outcomes, epsilon = 10 ** -4)
+# print('grad_check_diff: ', grad_check_diff)
+# check_gradient(compute_cost, compute_gradient)
 
-model = optimize.fmin_bfgs(compute_cost, x0=unrolled_weights, fprime=compute_gradient, args=(features, actual_outcomes), full_output=1, maxiter=5000)
+model = optimize.fmin_bfgs(compute_cost, x0=unrolled_weights, fprime=compute_gradient, args=(features, actual_outcomes), full_output=1, maxiter=MAXITER)
 predict(model[0], features, y=actual_outcomes)
+nnparams = pd.DataFrame(model[0])
+filename = "./models/params-{}-{}".format(time.strftime("%Y-%m-%d-%H%M"), MAXITER)
+nnparams.to_csv(filename)
+
+
+test_data = pd.read_csv('test.csv')
+test_data["Age"].fillna(test_data["Age"].median())
+test_data["Embarked"] = test_data["Embarked"].fillna(
+  test_data['Embarked'].value_counts().idxmax()
+)
+test_data["Embarked"][test_data["Embarked"] == "S"] = 0
+test_data["Embarked"][test_data["Embarked"] == "C"] = 1
+test_data["Embarked"][test_data["Embarked"] == "Q"] = 2
+test_data["Sex"][test_data["Sex"] == "female"] = 1
+test_data["Sex"][test_data["Sex"] == "male"] = 0
+test_features = test_data[FEATURES_LIST].values
+predictions = predict(model[0], test_features)
+
+
+PassengerId =np.array(test_data["PassengerId"]).astype(int)
+results = pd.DataFrame(predictions.astype('int'), PassengerId, columns = ["Survived"])
+results_filename = filename = "./test_results/results-{}-{}".format(time.strftime("%Y-%m-%d-%H%M"), MAXITER)
+results.to_csv(results_filename, index_label = ["PassengerId"])
