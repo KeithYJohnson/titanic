@@ -46,6 +46,10 @@ def predict(weights, features, input_size=INPUT_LAYER_SIZE, hidden_units=NUMBER_
         except ZeroDivisionError:
             print('Cant measure recall because it predicted no True pos and False neg')
 
+        fscore = 0
+        if bool(precision) & bool(recall):
+            fscore = 2 * precision * recall / (precision + recall)
+
         error_metrics  = '''
             True Positives: {}
             False Positives: {}
@@ -53,7 +57,9 @@ def predict(weights, features, input_size=INPUT_LAYER_SIZE, hidden_units=NUMBER_
             False Negatives: {}
             Recall: {}
             Precision: {}
-        '''.format(num_tp, num_fp, num_tn, num_fn, recall, precision)
+            F-Score: {}
+
+        '''.format(num_tp, num_fp, num_tn, num_fn, recall, precision, fscore)
         print(error_metrics)
 
         # Save error metrics in a text file
