@@ -32,6 +32,7 @@ print('setting up params')
 print('INPUT_LAYER_SIZE', INPUT_LAYER_SIZE)
 print('NUMBER_OF_HIDDEN_UNITS', NUMBER_OF_HIDDEN_UNITS)
 print('OUTPUT_LAYER', OUTPUT_LAYER)
+print('REGULARIZATION_STRENGTH: ', REGULARIZATION_STRENGTH)
 
 theta1 = rand_initialize_weights(INPUT_LAYER_SIZE, NUMBER_OF_HIDDEN_UNITS)
 theta2 = rand_initialize_weights(NUMBER_OF_HIDDEN_UNITS, OUTPUT_LAYER)
@@ -68,5 +69,13 @@ predictions = predict(model[0], test_features)
 
 PassengerId =np.array(test_data["PassengerId"]).astype(int)
 results = pd.DataFrame(predictions.astype('int'), PassengerId, columns = ["Survived"])
-results_filename = filename = "./test_results/results-{}-{}".format(time.strftime("%Y-%m-%d-%H%M"), MAXITER)
+results_filename = filename = "./test_results/results-{}-iters{}-ils{}-hls{}-ols{}-lda{}".format(
+    time.strftime("%Y-%m-%d-%H%M"),
+    MAXITER,
+    INPUT_LAYER_SIZE,
+    NUMBER_OF_HIDDEN_UNITS,
+    OUTPUT_LAYER,
+    REGULARIZATION_STRENGTH
+)
+
 results.to_csv(results_filename, index_label = ["PassengerId"])
