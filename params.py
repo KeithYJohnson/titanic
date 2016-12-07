@@ -6,3 +6,7 @@ NUMBER_OF_HIDDEN_UNITS = 25
 OUTPUT_LAYER = 1   # It's binary, either they survived or didn't
 MAXITER = 1000
 REGULARIZATION_STRENGTH = 1
+
+# split between training and cross validation data
+PERCENT_TRAINING = .9
+PERCENT_CV = 1 - PERCENT_TRAINING
