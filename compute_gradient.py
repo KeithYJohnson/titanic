@@ -15,7 +15,7 @@ def compute_gradient(weights,
                     input_size=INPUT_LAYER_SIZE,
                     hidden_units=NUMBER_OF_HIDDEN_UNITS,
                     output_size=OUTPUT_LAYER,
-                    regularization_strength=1,
+                    regularization_strength=REGULARIZATION_STRENGTH,
                     testing=False):
 
     [w2, w3] = unroll_weights(weights, input_size, hidden_units, output_size)

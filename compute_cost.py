@@ -15,7 +15,7 @@ def compute_cost(weights,
                 input_size=INPUT_LAYER_SIZE,
                 hidden_units=NUMBER_OF_HIDDEN_UNITS,
                 output_size=OUTPUT_LAYER,
-                regularization_strength=1,
+                regularization_strength=REGULARIZATION_STRENGTH,
                 testing=False):
 
     # 'Re-rolling' unrolled weights
