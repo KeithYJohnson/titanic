@@ -10,9 +10,6 @@ from compute_gradient import *
 from make_predictions import *
 from impute_data import *
 
-features = training_data[FEATURES_LIST].values
-
-# Setup the parameters
 nontest_data = pd.DataFrame.from_csv('train.csv')
 print('setting up params')
 print('INPUT_LAYER_SIZE', INPUT_LAYER_SIZE)
@@ -21,6 +18,17 @@ print('OUTPUT_LAYER', OUTPUT_LAYER)
 print('REGULARIZATION_STRENGTH: ', REGULARIZATION_STRENGTH)
 
 nontest_data = impute_data(nontest_data)
+
+# Splitting all data into training and cross validation set
+training_cv_split = round(nontest_data.shape[0] * PERCENT_TRAINING)
+training_set = nontest_data[:training_cv_split]
+cross_validation_set = nontest_data[training_cv_split:]
+
+#Matching the outcomes to match training vs cross-validation features
+actual_outcomes = (nontest_data.Survived.values).reshape(nontest_data.shape[0], 1)
+training_set_outcomes = (training_set.Survived.values).reshape(training_set.shape[0], 1)
+cross_validation_set_outcomes = (cross_validation_set.Survived.values).reshape(cross_validation_set.shape[0], 1)
+
 theta1 = rand_initialize_weights(INPUT_LAYER_SIZE, NUMBER_OF_HIDDEN_UNITS)
 theta2 = rand_initialize_weights(NUMBER_OF_HIDDEN_UNITS, OUTPUT_LAYER)
 unrolled_weights = np.hstack([theta1.flatten(), theta2.flatten()])
