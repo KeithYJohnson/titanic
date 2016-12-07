@@ -33,11 +33,9 @@ theta1 = rand_initialize_weights(INPUT_LAYER_SIZE, NUMBER_OF_HIDDEN_UNITS)
 theta2 = rand_initialize_weights(NUMBER_OF_HIDDEN_UNITS, OUTPUT_LAYER)
 unrolled_weights = np.hstack([theta1.flatten(), theta2.flatten()])
 
-actual_outcomes = (training_data['Survived'].values).reshape(training_data.shape[0], 1)
-
-cost = compute_cost(unrolled_weights, features, actual_outcomes)
-grads = compute_gradient(unrolled_weights, features, actual_outcomes)
-# grad_check_diff = optimize.check_grad(compute_cost, compute_gradient, unrolled_weights, features, actual_outcomes, epsilon = 10 ** -4)
+# cost = compute_cost(unrolled_weights, training_set, actual_outcomes)
+# grads = compute_gradient(unrolled_weights, training_set, actual_outcomes)
+# grad_check_diff = optimize.check_grad(compute_cost, compute_gradient, unrolled_weights, training_set, actual_outcomes, epsilon = 10 ** -4)
 # print('grad_check_diff: ', grad_check_diff)
 # check_gradient(compute_cost, compute_gradient)
 
