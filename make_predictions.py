@@ -42,7 +42,7 @@ def predict(weights, features, input_size=INPUT_LAYER_SIZE, hidden_units=NUMBER_
         # Recall: of all that survived, what fraction did this predict as surviving?
         recall = 0
         try:
-            recall = num_tp / (num_tp + num_fp)
+            recall = num_tp / (num_tp + num_fn)
         except ZeroDivisionError:
             print('Cant measure recall because it predicted no True pos and False neg')
 
