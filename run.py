@@ -33,24 +33,23 @@ theta1 = rand_initialize_weights(INPUT_LAYER_SIZE, NUMBER_OF_HIDDEN_UNITS)
 theta2 = rand_initialize_weights(NUMBER_OF_HIDDEN_UNITS, OUTPUT_LAYER)
 unrolled_weights = np.hstack([theta1.flatten(), theta2.flatten()])
 
-# cost = compute_cost(unrolled_weights, training_set, actual_outcomes)
-# grads = compute_gradient(unrolled_weights, training_set, actual_outcomes)
-# grad_check_diff = optimize.check_grad(compute_cost, compute_gradient, unrolled_weights, training_set, actual_outcomes, epsilon = 10 ** -4)
-# print('grad_check_diff: ', grad_check_diff)
-# check_gradient(compute_cost, compute_gradient)
-
+# Training the model
 model = optimize.fmin_bfgs(compute_cost, x0=unrolled_weights, fprime=compute_gradient, args=(training_set[FEATURES_LIST].values, training_set_outcomes), full_output=1, maxiter=MAXITER)
+
+# Making predictions on training data and writing to csv
 predict(model[0], nontest_data[FEATURES_LIST].values, y=actual_outcomes)
 nnparams = pd.DataFrame(model[0])
 filename = "./models/params-{}-{}".format(time.strftime("%Y-%m-%d-%H%M"), MAXITER)
 nnparams.to_csv(filename)
 
+# Making predictons on test data
 test_data = pd.read_csv('test.csv')
 test_data = impute_data(test_data)
 test_features = test_data[FEATURES_LIST].values
 predictions = predict(model[0], test_features)
 
 
+# Writing test data predictions to csv in the format kaggle expects
 PassengerId = np.array(test_data["PassengerId"]).astype(int)
 results = pd.DataFrame(predictions.astype('int'), PassengerId, columns = ["Survived"])
 results_filename = filename = "./test_results/results-{}-iters{}-ils{}-hls{}-ols{}-lda{}".format(
