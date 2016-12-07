@@ -51,7 +51,7 @@ test_features = test_data[FEATURES_LIST].values
 predictions = predict(model[0], test_features)
 
 
-PassengerId =np.array(test_data["PassengerId"]).astype(int)
+PassengerId = np.array(test_data["PassengerId"]).astype(int)
 results = pd.DataFrame(predictions.astype('int'), PassengerId, columns = ["Survived"])
 results_filename = filename = "./test_results/results-{}-iters{}-ils{}-hls{}-ols{}-lda{}".format(
     time.strftime("%Y-%m-%d-%H%M"),
