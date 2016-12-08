@@ -34,10 +34,17 @@ theta2 = rand_initialize_weights(NUMBER_OF_HIDDEN_UNITS, OUTPUT_LAYER)
 unrolled_weights = np.hstack([theta1.flatten(), theta2.flatten()])
 
 # Training the model
-model = optimize.fmin_bfgs(compute_cost, x0=unrolled_weights, fprime=compute_gradient, args=(training_set[FEATURES_LIST].values, training_set_outcomes), full_output=1, maxiter=MAXITER)
+model = optimize.fmin_cg(
+    compute_cost,
+    x0=unrolled_weights,
+    fprime=compute_gradient,
+    args=(training_set[FEATURES_LIST].values, training_set_outcomes, INPUT_LAYER_SIZE, NUMBER_OF_HIDDEN_UNITS, OUTPUT_LAYER, REGULARIZATION_STRENGTH, ACTV_FN, GRAD_FN),
+    full_output=1,
+    maxiter=MAXITER
+)
 
 # Making predictions on training data and writing to csv
-predict(model[0], nontest_data[FEATURES_LIST].values, y=actual_outcomes)
+predict(model[0], nontest_data[FEATURES_LIST].values, actv_fn=ACTV_FN, y=actual_outcomes)
 nnparams = pd.DataFrame(model[0])
 filename = "./models/params-{}-{}".format(time.strftime("%Y-%m-%d-%H%M"), MAXITER)
 nnparams.to_csv(filename)
@@ -46,7 +53,7 @@ nnparams.to_csv(filename)
 test_data = pd.read_csv('test.csv')
 test_data = impute_data(test_data)
 test_features = test_data[FEATURES_LIST].values
-predictions = predict(model[0], test_features)
+predictions = predict(model[0], test_features, actv_fn=ACTV_FN)
 
 
 # Writing test data predictions to csv in the format kaggle expects

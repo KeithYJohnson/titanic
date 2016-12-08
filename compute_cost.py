@@ -16,14 +16,17 @@ def compute_cost(weights,
                 hidden_units=NUMBER_OF_HIDDEN_UNITS,
                 output_size=OUTPUT_LAYER,
                 regularization_strength=REGULARIZATION_STRENGTH,
+                actv_fn=ACTV_FN,
+                grad_fn=GRAD_FN,
                 testing=False):
 
     # 'Re-rolling' unrolled weights
     [w2, w3] = unroll_weights(weights, input_size, hidden_units, output_size)
-    [a1, z2, a2, z3, a3] = forward_propagate(weights, features, input_size, hidden_units, output_size)
+    [a1, z2, a2, z3, a3] = forward_propagate(weights, features, input_size, hidden_units, output_size, actv_fn)
     num_examples = y.shape[0]
 
     y_matrix = create_y_matrix(num_examples, output_size, y)
+    # st()
     y_eq_1_term = np.multiply(-y_matrix, np.log(a3))
     y_eq_0_term = np.multiply((1 - y_matrix), np.log(1 - a3))
     unregularized_cost = (1 / num_examples) * np.sum(y_eq_1_term - y_eq_0_term)
