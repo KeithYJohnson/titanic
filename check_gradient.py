@@ -6,8 +6,8 @@ def check_gradient(cost_function, grad_function, epsilon = 10 ** -4, max_diff=1e
     print('checking gradients')
     [features, theta1, theta2, y, input_layer_size, hidden_layer_size, output_layer_size] = create_simple_nn_params()
     rolled_weights = np.hstack([theta1.T.flatten(), theta2.T.flatten()])
-    cost = cost_function(rolled_weights, features, y, input_layer_size, hidden_layer_size, output_layer_size)
-    grads = grad_function(rolled_weights, features, y, input_layer_size, hidden_layer_size, output_layer_size)
+    cost = cost_function(rolled_weights, features, y, input_layer_size, hidden_layer_size, output_layer_size, 4)
+    analytical_grad = grad_function(rolled_weights, features, y, input_layer_size, hidden_layer_size, output_layer_size, 4)
 
     rolled_weights_appox = np.zeros(rolled_weights.shape)
     perturb = np.zeros(rolled_weights.shape)
