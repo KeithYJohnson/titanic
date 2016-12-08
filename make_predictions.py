@@ -7,13 +7,20 @@ import numpy as np
 import pandas as pd
 import time
 
-def predict(weights, features, input_size=INPUT_LAYER_SIZE, hidden_units=NUMBER_OF_HIDDEN_UNITS, output_size=OUTPUT_LAYER, threshold =0.5, y=None):
+def predict(weights,
+            features,
+            input_size=INPUT_LAYER_SIZE,
+            hidden_units=NUMBER_OF_HIDDEN_UNITS,
+            output_size=OUTPUT_LAYER,
+            actv_fn=ACTV_FN,
+            threshold =0.5,
+            y=None):
     [w2, w3] = unroll_weights(weights, input_size, hidden_units, output_size)
 
     features = add_bias_column(features)
-    h1 = sigmoid(np.dot(features, w2.transpose()))
+    h1 = actv_fn(np.dot(features, w2.transpose()))
     h1 = add_bias_column(h1)
-    h2 = sigmoid(np.dot(h1, w3.transpose()))
+    h2 = actv_fn(np.dot(h1, w3.transpose()))
 
     did_survive = h2 > threshold
     unique, counts = np.unique(did_survive, return_counts=True)

@@ -16,10 +16,12 @@ def compute_gradient(weights,
                     hidden_units=NUMBER_OF_HIDDEN_UNITS,
                     output_size=OUTPUT_LAYER,
                     regularization_strength=REGULARIZATION_STRENGTH,
+                    actv_fn=ACTV_FN,
+                    grad_fn=GRAD_FN,
                     testing=False):
 
     [w2, w3] = unroll_weights(weights, input_size, hidden_units, output_size)
-    [a1, z2, a2, z3, a3] = forward_propagate(weights, features, input_size, hidden_units, output_size)
+    [a1, z2, a2, z3, a3] = forward_propagate(weights, features, input_size, hidden_units, output_size, actv_fn)
 
     num_examples = features.shape[0]
     num_features = features.shape[1]
@@ -30,7 +32,7 @@ def compute_gradient(weights,
     # δ**l=((w**l+1).T * δ**l+1)⊙ σ′(z**l),
     d2 = np.multiply(
         np.dot(d3, w3[:,1:]),
-        sigmoid_gradient(z2)
+        grad_fn(z2)
     )
 
     unreg_w2_grad = (1/num_examples) * np.dot(d2.T, a1)
