@@ -1,6 +1,8 @@
 from ipdb import set_trace as st
 from create_simple_nn_params import *
 import numpy as np
+from compute_cost import *
+from compute_gradient import *
 
 def grad_check(costfn, gradfn, *params):
     cost = costfn(*params)
@@ -49,6 +51,10 @@ def norm_diff(numerical_grad, analytical_grad, max_diff):
     print('should be less than the max_diff of: ', max_diff)
     diff = np.linalg.norm(numerical_grad - analytical_grad) / np.linalg.norm(numerical_grad + analytical_grad);
     print('diff: ', diff, '\n\n')
+
+[features, theta1, theta2, y, input_layer_size, hidden_layer_size, output_layer_size] = create_simple_nn_params()
+unrolled_weights = np.hstack([theta1.flatten(), theta2.flatten()])
+
 if __name__ == '__main__':
     # Simple example to test that the gradient checking code runs correctly
     print('running simple grad check')
@@ -56,4 +62,11 @@ if __name__ == '__main__':
         lambda x: np.sum(x ** 2),
         lambda x: x * 2,
         np.random.randn(4,5)
+    )
+
+    print('running grad check on actual compute_cost and compute_gradient algos')
+    grad_check(
+        lambda *params: compute_cost(*params),
+        lambda *params: compute_gradient(*params),
+        unrolled_weights, features, y, input_layer_size, hidden_layer_size, output_layer_size
     )
