@@ -29,6 +29,13 @@ def check_gradient(cost_function, grad_function, epsilon = 10 ** -4, max_diff=1e
 
 
 
+def elementwise_error_diff(numerical_grad, analytical_grad, index, threshold=1e-5):
+    reldiff = abs(numerical_grad - analytical_grad[index]) / max(1, abs(numerical_grad), abs(analytical_grad[index]))
+    if reldiff > threshold:
+        print("Gradient check failed.")
+        print("gradient error found at index %s" % str(index))
+        print("Your gradient: %f \t Numerical gradient: %f" % (analytical_grad[index], numerical_grad))
+        return
 
 ## SEE http://cs231n.github.io/neural-networks-3/
 def relative_error_diff(numerical_grad, analytical_grad):
