@@ -49,3 +49,11 @@ def norm_diff(numerical_grad, analytical_grad, max_diff):
     print('should be less than the max_diff of: ', max_diff)
     diff = np.linalg.norm(numerical_grad - analytical_grad) / np.linalg.norm(numerical_grad + analytical_grad);
     print('diff: ', diff, '\n\n')
+if __name__ == '__main__':
+    # Simple example to test that the gradient checking code runs correctly
+    print('running simple grad check')
+    grad_check(
+        lambda x: np.sum(x ** 2),
+        lambda x: x * 2,
+        np.random.randn(4,5)
+    )
