@@ -2,31 +2,32 @@ from ipdb import set_trace as st
 from create_simple_nn_params import *
 import numpy as np
 
-def check_gradient(cost_function, grad_function, epsilon = 10 ** -4, max_diff=1e-9):
-    print('checking gradients')
-    [features, theta1, theta2, y, input_layer_size, hidden_layer_size, output_layer_size] = create_simple_nn_params()
-    rolled_weights = np.hstack([theta1.T.flatten(), theta2.T.flatten()])
-    cost = cost_function(rolled_weights, features, y, input_layer_size, hidden_layer_size, output_layer_size, 4)
-    analytical_grad = grad_function(rolled_weights, features, y, input_layer_size, hidden_layer_size, output_layer_size, 4)
+def grad_check(costfn, gradfn, *params):
+    cost = costfn(*params)
+    analytical_grad  = gradfn(*params)
 
-    numerical_grad = np.zeros(rolled_weights.shape)
-    perturb = np.zeros(rolled_weights.shape)
+    numerical_grad = np.zeros(analytical_grad.shape)
+    epsilon = 1e-4
     for index, x in np.ndenumerate(numerical_grad):
+        perturb = np.zeros(analytical_grad.shape)
         perturb[index] = epsilon
 
-        Jplus = cost_function((rolled_weights + perturb), features, y, input_layer_size, hidden_layer_size, output_layer_size)
-        Jminus = cost_function((rolled_weights - perturb), features, y, input_layer_size, hidden_layer_size, output_layer_size)
+        #Why?  Cuz *** TypeError: 'tuple' object does not support item assignment
+        plus_params = list(params)
+        plus_perturbed = plus_params[0] + perturb
+        plus_params[0] = plus_perturbed
+
+        minus_params = list(params)
+        minus_perturbed = minus_params[0] - perturb
+        minus_params[0] = minus_perturbed
+
+        Jplus = costfn(*plus_params)
+        Jminus = costfn(*minus_params)
 
         weight_grad = (Jplus - Jminus) / (2 * epsilon)
         numerical_grad[index] = weight_grad
-        perturb[index] = 0
 
-    print('abs element-wise diff between numerical grad against analytical grad')
-    print(np.abs(numerical_grad - analytical_grad))
-    relative_error_diff(numerical_grad, analytical_grad)
-    norm_diff(numerical_grad, analytical_grad, max_diff)
-
-
+        elementwise_error_diff(weight_grad, analytical_grad, index)
 
 
 def elementwise_error_diff(numerical_grad, analytical_grad, index, threshold=1e-5):
