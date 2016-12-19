@@ -40,11 +40,12 @@ def elementwise_error_diff(numerical_grad, analytical_grad, index, threshold=1e-
 
 ## SEE http://cs231n.github.io/neural-networks-3/
 def relative_error_diff(numerical_grad, analytical_grad):
-    diff = abs(analytical_grad - numerical_grad) / np.maximum(abs(numerical_grad), abs(analytical_grad))
+    diff = abs(numerical_grad - analytical_grad) / np.maximum(1, abs(numerical_grad), abs(analytical_grad))
     print("relative_error_diff: ", diff)
 
+
 def norm_diff(numerical_grad, analytical_grad, max_diff):
-    print('\nnp.linalg.norm(rolled_weights - analytical_grad)/np.linalg.norm(rolled_weights + analytical_grad);')
+    print('\nnp.linalg.norm(x - analytical_grad)/np.linalg.norm(x + analytical_grad);')
     print('should be less than the max_diff of: ', max_diff)
     diff = np.linalg.norm(numerical_grad - analytical_grad) / np.linalg.norm(numerical_grad + analytical_grad);
     print('diff: ', diff, '\n\n')
