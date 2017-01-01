@@ -1,6 +1,9 @@
 from math import cos
 import numpy as np
 from compute_gradient import *
+from sigmoid import *
+from sigmoid_gradient import *
+from compute_cost import *
 
 input_layer_size  = 2
 hidden_layer_size = 2
@@ -8,7 +11,7 @@ output_layer_size = 4
 weights  = np.array(list(range(1, 19))) / 10
 features = np.cos(np.matrix('1 2 ; 3 4 ; 5 6'))
 outcomes = np.matrix('4; 2; 3')
-regularization_strength = 4
+regularization_strength = 4.0
 
 expected_d2 = np.matrix('\
    0.79393   1.05281; \
@@ -33,6 +36,27 @@ expected_reg_w3_grad = np.matrix('\
    1.79442   0.93566   0.96699  \
 ')
 
+expected_grad = np.matrix('\
+    0.76614; \
+    0.97990; \
+    0.37246; \
+    0.49749; \
+    0.64174; \
+    0.74614; \
+    0.88342; \
+    0.56876; \
+    0.58467; \
+    0.59814; \
+    1.92598; \
+    1.94462; \
+    1.98965; \
+    2.17855; \
+    2.47834; \
+    2.50225; \
+    2.52644; \
+    2.72233  \
+')
+
 expected_grads = np.array([0.76614,0.97990,0.37246,0.49749,0.64174,0.74614,0.88342,0.56876,0.58467,0.59814,1.92598,1.94462,1.98965,2.17855,2.47834,2.50225,2.52644,2.72233])
 
 [actual_rolled_grads,
@@ -50,7 +74,14 @@ expected_grads = np.array([0.76614,0.97990,0.37246,0.49749,0.64174,0.74614,0.883
         hidden_layer_size,
         output_layer_size,
         regularization_strength,
-        True
+        actv_fn=sigmoid,
+        grad_fn=sigmoid_gradient,
+        testing=True
     )
 
-assert(np.all(abs(actual_rolled_grads - expected_grads) <= .0001))
+
+def test_fn():
+    assert(np.allclose(actual_rolled_grads, expected_grads))
+    assert(np.allclose(expected_d3, actual_d3))
+    assert(np.allclose(expected_d2, actual_d2))
+    assert(np.allclose(expected_grads, actual_rolled_grads))
