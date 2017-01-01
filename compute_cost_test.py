@@ -1,6 +1,9 @@
 from math import cos
 import numpy as np
 from compute_cost import *
+from sigmoid import *
+from sigmoid_gradient import *
+import pytest
 
 input_layer_size  = 2
 hidden_layer_size = 2
@@ -33,16 +36,21 @@ expected_a3 = np.matrix(' \
  actual_z2,
  actual_a2,
  actual_z3,
- actual_a3] = compute_cost(weights,
-                           features,
-                           outcomes,
-                           input_layer_size,
-                           hidden_layer_size,
-                           output_layer_size,
-                           regularization_strength,
-                           True)
+ actual_a3] = compute_cost(
+     weights,
+     features,
+     outcomes,
+     input_layer_size,
+     hidden_layer_size,
+     output_layer_size,
+     regularization_strength,
+     actv_fn=sigmoid,
+     grad_fn=sigmoid_gradient,
+     testing=True
+ )
 
-assert(np.all(abs(expected_z2 - actual_z2) <= .0001))
-assert(np.all(abs(expected_a2 - actual_a2) <= .0001))
-assert(np.all(abs(expected_a3 - actual_a3) <= .0001))
-assert(np.all(abs(19.473 - actual_cost) <= .001))
+def test_fn():
+    assert(np.allclose(expected_z2, actual_z2))
+    assert(np.allclose(expected_a2, actual_a2))
+    assert(np.allclose(expected_a3, actual_a3))
+    assert(np.allclose(19.473, actual_cost, 1e-4))
