@@ -85,4 +85,6 @@ def test_fn():
     assert(np.allclose(actual_rolled_grads, expected_grads))
     assert(np.allclose(expected_d3, actual_d3))
     assert(np.allclose(expected_d2, actual_d2))
+    assert(np.allclose(expected_reg_w3_grad, actual_reg_w3_grad))
+    assert(np.allclose(expected_reg_w2_grad, actual_reg_w2_grad))
     assert(np.allclose(expected_grads, actual_rolled_grads))
